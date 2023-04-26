@@ -6,3 +6,8 @@ class TicketsForm(forms.Form):
     destiny = forms.CharField(label="Destino", max_length=100)
     departure_date = forms.DateField(label="Data de partida", widget=DatePicker())
     back_date = forms.DateField(label="Data de volta", widget=DatePicker())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
