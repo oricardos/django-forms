@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{%block content%}
+    {% if form %}
+        <p>Origem: {{form.origin.value}}</p>
+        <p>Destino: {{form.destiny.value}}</p>
+        <p>Data de ida: {{form.departure_date.value}}</p>
+        <p>Data de volta: {{form.back_date.value}}</p>
+    {% endif %}
+{% endblock %}
