@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static%}
 {%block content%}
+<section class="container col-8">
     <form action="{% url 'data' %}" method="post">
         {% csrf_token%}
         {% for field in form.visible_fields %}
@@ -11,4 +12,5 @@
         {% endfor %}
         <input type="submit" value="Enviar" class="btn btn-success" />
     </form>
+    <section>
 {% endblock %}
