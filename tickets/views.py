@@ -29,10 +29,9 @@ def data(request):
     """
     if request.method == 'POST':
         form = TicketsForm(request.POST)
-        context = {'form': form}
         if form.is_valid():
+            context = {'form': form}
             return render(request, 'data.html', context)
-    else:
-        form = TicketsForm()
-        context = {'form': form}
-    return render(request, 'data.html', context)
+        else:
+            context = {'form': form}
+            return render(request, 'index.html', context)

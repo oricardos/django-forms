@@ -22,3 +22,10 @@ class TicketsForm(forms.Form):
         super().__init__(*args, **kwargs)
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
+
+    def clean_origin(self):
+        origin = self.cleaned_data.get('origin')
+        if any(char.isdigit() for char in origin):
+            raise forms.ValidationError('Origem inválida: Não inclua números')
+        else:
+            return origin
