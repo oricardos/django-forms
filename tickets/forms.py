@@ -2,7 +2,7 @@ from django import forms
 from tempus_dominus.widgets import DatePicker
 from datetime import datetime
 from tickets.class_type import class_types
-from tickets.validation import origin_destiny_equals, has_number
+from tickets.validation import origin_destiny_equals, has_number, validate_date
 
 class TicketsForm(forms.Form):
     origin = forms.CharField(label="Origem", max_length=100)
@@ -27,10 +27,16 @@ class TicketsForm(forms.Form):
     def clean(self):
         origin = self.cleaned_data.get('origin')
         destiny = self.cleaned_data.get('destiny')
+        departure_date = self.cleaned_data.get('departure_date')
+        back_date = self.cleaned_data.get('back_date')
+        search_date = self.cleaned_data.get('search_date')
+
         errors_list = {}
+
         has_number(origin, 'origin', errors_list)
         has_number(destiny, 'destiny', errors_list)
         origin_destiny_equals(origin, destiny, errors_list)
+        validate_date(departure_date, back_date, search_date, errors_list)
 
         if errors_list is not None:
             for error in errors_list:
