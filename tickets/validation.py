@@ -21,3 +21,17 @@ def has_number(value, name, errors_list):
     """
     if any(char.isdigit() for char in value):
         errors_list[name] = 'Não inclua números neste campo.'
+
+def validate_date(departure_date, back_date, search_date, errors_list):
+    """
+    função que faz várias validações nas datas
+
+    Args:
+        departure_date (string): data de partida
+        back_dateerros_list (string): data de volta
+    """
+    if departure_date > back_date:
+        errors_list['back_date'] = 'A data de partida não pode ser maior que a data da volta.'
+
+    if departure_date < search_date:
+        errors_list['departure_date'] = 'A data de partida não pode ser menor que a data de hoje.'
