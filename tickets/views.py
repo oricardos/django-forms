@@ -31,6 +31,7 @@ def data(request):
         form = TicketsForm(request.POST)
         if form.is_valid():
             context = {'form': form}
+            print(context)
             return render(request, 'data.html', context)
         else:
             context = {'form': form}

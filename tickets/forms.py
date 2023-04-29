@@ -3,21 +3,27 @@ from tempus_dominus.widgets import DatePicker
 from datetime import datetime
 from tickets.class_type import class_types
 from tickets.validation import origin_destiny_equals, has_number, validate_date
+from tickets.models import Ticket, TravelClass, Person
 
-class TicketsForm(forms.Form):
-    origin = forms.CharField(label="Origem", max_length=100)
-    destiny = forms.CharField(label="Destino", max_length=100)
-    departure_date = forms.DateField(label="Data de partida", widget=DatePicker())
-    back_date = forms.DateField(label="Data de volta", widget=DatePicker())
+class TicketsForm(forms.ModelForm):
     search_date = forms.DateField(label="Data da pesquisa", disabled=True, initial=datetime.today)
-    class_type = forms.ChoiceField(label="TIpo de classe", choices=class_types)
-    infos = forms.CharField(
-        label="Informações extras",
-        max_length=200,
-        widget=forms.Textarea(),
-        required=False
-    )
-    email = forms.EmailField(label="Email", max_length=200)
+
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+        labels = {
+            'origin': 'Origem',
+            'destiny': 'Destino',
+            'departure_date': 'Data de partida',
+            'back_date': 'Data de volta',
+            'search_date': 'Data da pesquisa',
+            'infos': 'Informações',
+            'class_type': 'Tipo da Classe',
+        }
+        widgets = {
+            'departure_date': DatePicker(),
+            'back_date': DatePicker(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -25,21 +31,21 @@ class TicketsForm(forms.Form):
             self.fields[myField].widget.attrs['class'] = 'form-control'
 
     def clean(self):
-        origin = self.cleaned_data.get('origin')
-        destiny = self.cleaned_data.get('destiny')
-        departure_date = self.cleaned_data.get('departure_date')
-        back_date = self.cleaned_data.get('back_date')
-        search_date = self.cleaned_data.get('search_date')
+        cleaned_data = super().clean()
+        origin = cleaned_data.get('origin')
+        destiny = cleaned_data.get('destiny')
+        departure_date = cleaned_data.get('departure_date')
+        back_date = cleaned_data.get('back_date')
+        search_date = cleaned_data.get('search_date')
 
-        errors_list = {}
+        errors_dict = {}
 
-        has_number(origin, 'origin', errors_list)
-        has_number(destiny, 'destiny', errors_list)
-        origin_destiny_equals(origin, destiny, errors_list)
-        validate_date(departure_date, back_date, search_date, errors_list)
+        has_number(origin, 'origin', errors_dict)
+        has_number(destiny, 'destiny', errors_dict)
+        origin_destiny_equals(origin, destiny, errors_dict)
+        validate_date(departure_date, back_date, search_date, errors_dict)
 
-        if errors_list is not None:
-            for error in errors_list:
-                error_message = errors_list[error]
-                self.add_error(error, error_message)
-        return self.changed_data
+        for field, error_message in errors_dict.items():
+            self.add_error(field, error_message)
+
+        return cleaned_data
