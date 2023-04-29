@@ -15,6 +15,19 @@
             </div>
             {% endfor %}
         {% endfor %}
+
+
+        {% for field in person_form.visible_fields %}
+            <div class="form-group">
+                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                {{field}}
+            </div>
+            {% for error in field.errors %}
+            <div class="text-danger" role="alert">
+                {{field.errors}}
+            </div>
+            {% endfor %}
+        {% endfor %}
         <input type="submit" value="Enviar" class="btn btn-success" />
     </form>
     <section>

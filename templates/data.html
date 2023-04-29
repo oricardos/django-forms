@@ -2,14 +2,12 @@
 {% load static%}
 
 {%block content%}
-    {% if form %}
-        <p>Origem: {{form.origin.value}}</p>
-        <p>Destino: {{form.destiny.value}}</p>
-        <p>Data de ida: {{form.departure_date.value}}</p>
-        <p>Data de volta: {{form.back_date.value}}</p>
-        <p>Data da pesquisa: {{form.search_date.value}}</p>
-        <p>Tipo de classe: {{form.class_type.value}}</p>
-        <p>Informações: {{form.infos.value}}</p>
-        <p>Email: {{form.email.value}}</p>
-    {% endif %}
+    <p>Origem: {{form.origin.value}}</p>
+    <p>Destino: {{form.destiny.value}}</p>
+    <p>Data de ida: {{form.departure_date.value}}</p>
+    <p>Data de volta: {{form.back_date.value}}</p>
+    <p>Data da pesquisa: {{form.search_date.value}}</p>
+    <p>Tipo de classe: {{form.class_type.value}}</p>
+    <p>Informações: {{form.infos.value}}</p>
+    <p>Email: {{person_form.email.value}}</p>
 {% endblock %}

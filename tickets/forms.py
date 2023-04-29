@@ -49,3 +49,13 @@ class TicketsForm(forms.ModelForm):
             self.add_error(field, error_message)
 
         return cleaned_data
+    
+class PersonForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        exclude = ['nome']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'

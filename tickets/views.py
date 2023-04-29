@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from tickets.forms import TicketsForm
+from tickets.forms import TicketsForm, PersonForm
 
 def index(request):
     """
@@ -12,7 +12,8 @@ def index(request):
         HttpResponse: uma resposta HTTP que renderiza o template 'index.html', com um formulário de criação de tickets sendo passado no context.
     """
     form = TicketsForm()
-    context = {'form': form}
+    person_form = PersonForm
+    context = {'form': form, 'person_form': person_form}
     return render(request, 'index.html', context)
 
 def data(request):
@@ -29,10 +30,11 @@ def data(request):
     """
     if request.method == 'POST':
         form = TicketsForm(request.POST)
+        person_form = PersonForm(request.POST)
         if form.is_valid():
-            context = {'form': form}
+            context = {'form': form, 'person_form': person_form}
             print(context)
             return render(request, 'data.html', context)
         else:
-            context = {'form': form}
+            context = {'form': form, 'person_form': person_form}
             return render(request, 'index.html', context)
